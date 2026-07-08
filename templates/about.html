@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Обо мне | Александра Скворцова{% endblock %}
+
+{% block content %}
+
+<section class="about-expertise-section">
+  <div class="about-expertise-panel">
+    <figure class="about-photo-card">
+      <img src="{{ url_for('static', filename='images/alexandra-about.png') }}" alt="Александра Скворцова в уютном интерьере">
+    </figure>
+    <div class="about-expertise-content">
+      <article class="about-expertise-copy">
+        <p class="eyebrow">Экспертиза и текущий фокус</p>
+        <p>
+          Мой профессиональный опыт связан с закупками, логистикой, ВЭД и управлением
+          цепочками поставок, то есть с процессами, где бизнес каждый день сталкивается
+          со сроками, данными, ограничениями и человеческим фактором.
+        </p>
+        <p>
+          Я умею разложить сложный процесс на понятные шаги,
+          найти узкие места, сформулировать задачу и довести ее до рабочего решения.
+          Сейчас я развиваю практику применения ИИ для бизнес-задач, которые хорошо знаю
+          изнутри: документы, заявки, управленческие выводы, переговоры, данные и рутина.
+        </p>
+      </article>
+      <aside class="about-snapshot-card" aria-label="Ключевые области опыта">
+        <div class="about-snapshot-group">
+          <h2>Что я знаю изнутри</h2>
+          <div class="note-tags">
+            <span>закупки</span>
+            <span>логистика</span>
+            <span>ВЭД</span>
+            <span>supply shain</span>
+            <span>аналитика</span>
+            <span>ERP</span>
+            <span>автоматизация</span>
+          </div>
+        </div>
+        <p class="about-snapshot-note">Выращиваю решения там, где хорошо знаю почву.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-section about-timeline-section">
+  <div class="section-heading">
+    <p class="eyebrow">Профессиональный путь</p>
+  </div>
+  <div class="timeline">
+    {% for item in timeline %}
+      <article class="timeline-item">
+        <span class="timeline-marker" aria-hidden="true"></span>
+        <div class="timeline-card">
+          <p class="timeline-period">{{ item.period }}</p>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Статьи | Александра Скворцова{% endblock %}
+
+{% block content %}
+<section class="page-head articles-page-head">
+  <div class="intro-panel articles-intro-panel">
+    <div class="intro-copy">
+      <p class="eyebrow">Личный журнал</p>
+      <h1>Статьи</h1>
+      <p>
+        Здесь я собираю заметки, наблюдения и размышления о том, как ИИ приживается
+        в реальных бизнес-процессах и чему я учусь по дороге.
+      </p>
+      <div class="note-tags intro-tags" aria-label="Темы статей">
+        <span>наблюдения</span>
+        <span>практика</span>
+        <span>ИИ</span>
+        <span>процессы</span>
+        <span>рабочие заметки</span>
+      </div>
+    </div>
+    <img class="fitto-accent fitto-article" src="{{ url_for('static', filename='images/fitto-articles.png') }}" alt="Фитто читает и пишет заметки">
+  </div>
+</section>
+
+<section class="section compact articles-list-section">
+  <div class="article-grid editorial-article-grid">
+    {% for article in articles %}
+      <article class="article-card {% if loop.first %}featured-article-card{% endif %}">
+        <div class="article-card-copy">
+        <p class="article-date">{{ article.date }}</p>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.excerpt }}</p>
+        </div>
+        <a class="article-read-link" href="{{ url_for('article_detail', slug=article.slug) }}">Читать статью</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

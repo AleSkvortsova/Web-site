@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} | Александра Скворцова{% endblock %}
+
+{% block content %}
+<article class="article-page article-detail-page">
+  <header class="article-hero-panel">
+    <a class="back-link" href="{{ url_for('articles') }}">← Все статьи</a>
+    <p class="article-date">{{ article.date }}</p>
+    <h1>{{ article.title }}</h1>
+  </header>
+
+  <div class="article-content reading-panel">
+    {% for paragraph in article.content %}
+      <p>
+        {% if article.project_link is defined and article.project_link.text in paragraph %}
+          {% set link_parts = paragraph.split(article.project_link.text) %}
+          {{ link_parts[0] }}<a class="article-inline-link" href="{{ url_for('project_detail', slug=article.project_link.slug) }}">{{ article.project_link.text }}</a>{{ link_parts[1] }}
+        {% else %}
+          {{ paragraph }}
+        {% endif %}
+      </p>
+    {% endfor %}
+  </div>
+
+  <footer class="article-end-panel">
+    <p class="eyebrow">Продолжение журнала</p>
+    <h2>Вернуться к заметкам</h2>
+    <p>Можно посмотреть другие тексты и наблюдения о том, как ИИ постепенно приживается в рабочих задачах.</p>
+    <a class="button secondary" href="{{ url_for('articles') }}">Все статьи</a>
+  </footer>
+</article>
+{% endblock %}

@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+
+rag_source/
+rag_core/chroma_db/
+chroma_db/
+
+*.log
+logs/
+cache/

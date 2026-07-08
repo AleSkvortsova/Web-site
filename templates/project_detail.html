@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} | Александра Скворцова{% endblock %}
+
+{% block content %}
+<section class="page-head project-page-head">
+  <div class="project-hero project-case-hero">
+    <div class="project-hero-text">
+      <p class="project-direction">{{ project.direction }}</p>
+      <h1>{{ project.title }}</h1>
+      <p>{{ project.summary }}</p>
+    </div>
+    {% if project.github_url %}
+      <div class="project-hero-actions">
+        <a class="button secondary github-button" href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.54 2.87 8.39 6.84 9.75.5.1.68-.22.68-.5v-1.9c-2.78.62-3.37-1.22-3.37-1.22-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.66.35-1.12.63-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.31 9.31 0 0 1 12 6.99c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.95.68 1.92v2.79c0 .28.18.6.69.5A10.09 10.09 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+          </svg>
+          GitHub
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="project-detail project-case-detail">
+  <div class="project-overview-grid">
+    <article class="project-detail-card">
+      <span class="card-number">01</span>
+      <h2>Бизнес-задача</h2>
+      <p>{{ project.business_task }}</p>
+    </article>
+    <article class="project-detail-card">
+      <span class="card-number">02</span>
+      <h2>Идея решения</h2>
+      <p>{{ project.solution_idea }}</p>
+    </article>
+    <article class="project-detail-card project-stack-card">
+      <div>
+        <span class="card-number">03</span>
+        <h2>Технологический стек</h2>
+        <div class="tag-list" aria-label="Технологический стек проекта">
+          {% for tool in project.tech_stack %}
+            <span class="tag">{{ tool }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <img class="fitto-project-note fitto-project-detail" src="{{ url_for('static', filename='images/fitto-project-detail.png') }}" alt="Фитто изучает проект с лупой">
+    </article>
+  </div>
+
+  <div class="project-story-panel">
+  <article>
+    <h2>Что было сделано</h2>
+    <ul>
+      {% for item in project.work_done %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </article>
+  <article>
+    <h2>Потенциальная польза</h2>
+    <p>{{ project.benefit }}</p>
+  </article>
+  <article>
+    <h2>Чему я научилась</h2>
+    <p>{{ project.learning }}</p>
+  </article>
+  </div>
+</section>
+{% endblock %}

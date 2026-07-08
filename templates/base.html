@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Александра Скворцова{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Playfair+Display:wght@600;700&family=Prata&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat-widget.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="Александра Скворцова">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-blob"></span>
+          <img class="brand-leaves" src="{{ url_for('static', filename='images/leaves-mark.png') }}" alt="">
+        </span>
+        <span class="brand-name">Александра Скворцова</span>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="{% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Главная</a>
+        <a class="{% if request.endpoint in ['projects', 'project_detail'] %}active{% endif %}" href="{{ url_for('projects') }}">Проекты</a>
+        <a class="{% if request.endpoint in ['articles', 'article_detail'] %}active{% endif %}" href="{{ url_for('articles') }}">Статьи</a>
+        <a class="{% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">Обо мне</a>
+        <a class="{% if request.endpoint == 'contacts' %}active{% endif %}" href="{{ url_for('contacts') }}">Контакты</a>
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Александра Скворцова. Рабочий журнал о бизнес-процессах, данных и ИИ.</p>
+    </footer>
+    <div id="fitto-chat-widget" data-fitto-src="{{ url_for('static', filename='images/fitto-widget.png') }}"></div>
+    <script src="{{ url_for('static', filename='js/chat-widget.js') }}" defer></script>
+  </body>
+</html>
