@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+import sys
+
+try:
+    import pysqlite3
+    sys.modules["sqlite3"] = pysqlite3
+except ImportError:
+    pass
+
 from typing import Any
 
 from rag_core.config import settings
