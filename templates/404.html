@@ -15,11 +15,11 @@
       <div class="not-found-actions" aria-label="Куда перейти дальше">
         <a class="button" href="{{ url_for('index') }}">Вернуться на главную</a>
         <a class="button secondary" href="{{ url_for('projects') }}">Посмотреть проекты</a>
-        <a class="not-found-link" href="{{ url_for('articles') }}">Почитать статьи</a>
+        <a class="button secondary not-found-button" href="{{ url_for('articles') }}">Почитать статьи</a>
       </div>
     </div>
     <div class="not-found-visual" aria-hidden="true">
-      <img src="{{ url_for('static', filename='images/fitto-mascot.png') }}" alt="">
+      <img src="{{ url_for('static', filename='images/fitto-404.png') }}" alt="">
     </div>
   </div>
 </section>

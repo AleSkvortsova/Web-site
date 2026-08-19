@@ -1465,7 +1465,7 @@ h3 {
 .not-found-panel {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
   align-items: center;
   gap: clamp(28px, 6vw, 72px);
   min-height: 420px;
@@ -1495,18 +1495,21 @@ h3 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
-.not-found-link {
-  color: var(--accent-dark);
-  font-weight: 700;
-  text-decoration: none;
+.not-found-actions .button {
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.not-found-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 5px;
+.not-found-actions .button:focus-visible {
+  outline: 3px solid rgba(111, 127, 85, 0.28);
+  outline-offset: 3px;
 }
 
 .not-found-visual {
@@ -1520,9 +1523,9 @@ h3 {
   content: "";
   position: absolute;
   right: 8px;
-  bottom: 10px;
-  width: 168px;
-  height: 168px;
+  bottom: 16px;
+  width: 190px;
+  height: 190px;
   border-radius: 44% 56% 51% 49% / 56% 44% 58% 42%;
   background: rgba(226, 234, 216, 0.78);
   transform: rotate(-8deg);
@@ -1532,8 +1535,8 @@ h3 {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 4px;
-  width: 102px;
+  bottom: 0;
+  width: 132px;
   height: 17px;
   border-radius: 999px;
   background: rgba(79, 95, 61, 0.12);
@@ -1544,8 +1547,8 @@ h3 {
 .not-found-visual img {
   position: relative;
   z-index: 1;
-  width: auto;
-  height: 180px;
+  width: min(100%, 292px);
+  height: auto;
   object-fit: contain;
 }
 
@@ -1828,12 +1831,13 @@ h3 {
 
   .not-found-visual::before {
     right: 0;
-    width: 128px;
-    height: 128px;
+    width: 142px;
+    height: 142px;
   }
 
   .not-found-visual img {
-    height: 132px;
+    width: min(100%, 220px);
+    height: auto;
   }
 
   .intro-copy p,
