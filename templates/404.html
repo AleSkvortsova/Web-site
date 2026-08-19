@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}404 | Александра Скворцова{% endblock %}
+
+{% block content %}
+<section class="not-found-page" aria-labelledby="not-found-title">
+  <div class="not-found-panel">
+    <div class="not-found-copy">
+      <p class="eyebrow">404</p>
+      <h1 id="not-found-title">Кажется, эта грядка пока не засажена</h1>
+      <p>
+        Страница, которую вы ищете, не найдена. Возможно, ссылка устарела,
+        адрес набран с ошибкой или проект уже переехал на другой участок сада.
+      </p>
+      <div class="not-found-actions" aria-label="Куда перейти дальше">
+        <a class="button" href="{{ url_for('index') }}">Вернуться на главную</a>
+        <a class="button secondary" href="{{ url_for('projects') }}">Посмотреть проекты</a>
+        <a class="not-found-link" href="{{ url_for('articles') }}">Почитать статьи</a>
+      </div>
+    </div>
+    <div class="not-found-visual" aria-hidden="true">
+      <img src="{{ url_for('static', filename='images/fitto-mascot.png') }}" alt="">
+    </div>
+  </div>
+</section>
+{% endblock %}

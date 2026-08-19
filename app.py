@@ -390,6 +390,11 @@ def contacts():
     return render_template("contacts.html")
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("404.html"), 404
+
+
 @app.post("/api/chat")
 def api_chat():
     payload = request.get_json(silent=True) or {}
