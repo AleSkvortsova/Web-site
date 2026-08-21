@@ -1327,7 +1327,7 @@ h3 {
 
 .about-learning-heading h2 {
   margin-bottom: 12px;
-  font-size: clamp(32px, 4vw, 44px);
+  font-size: 21px;
 }
 
 .about-learning-heading > p:last-child {
@@ -1384,8 +1384,8 @@ h3 {
 
 .certificate-copy h3 {
   margin-bottom: 8px;
-  font-size: 24px;
-  line-height: 1.2;
+  font-size: 21px;
+  line-height: 1.3;
 }
 
 .certificate-copy h3 a {
@@ -1941,8 +1941,13 @@ h3 {
   }
 
   .about-photo-card {
+    order: 1;
     width: 100%;
     aspect-ratio: 4 / 3;
+  }
+
+  .about-expertise-content {
+    order: 2;
   }
 
   .about-photo-card img {
@@ -2251,16 +2256,8 @@ h3 {
     padding: 20px;
   }
 
-  .about-learning-heading h2 {
-    font-size: 30px;
-  }
-
   .certificate-copy {
     padding: 18px;
-  }
-
-  .certificate-copy h3 {
-    font-size: 22px;
   }
 
   .about-photo-card {
