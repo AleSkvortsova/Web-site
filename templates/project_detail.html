@@ -50,13 +50,20 @@
   </div>
 
   <div class="project-story-panel">
-  <article>
-    <h2>Что было сделано</h2>
-    <ul>
-      {% for item in project.work_done %}
-        <li>{{ item }}</li>
-      {% endfor %}
-    </ul>
+  <article class="{% if project.screenshot is defined %}project-work-with-media{% endif %}">
+    <div>
+      <h2>Что было сделано</h2>
+      <ul>
+        {% for item in project.work_done %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% if project.screenshot is defined %}
+      <figure class="project-screenshot">
+        <img src="{{ url_for('static', filename=project.screenshot) }}" alt="{{ project.screenshot_alt }}">
+      </figure>
+    {% endif %}
   </article>
   <article>
     <h2>Потенциальная польза</h2>

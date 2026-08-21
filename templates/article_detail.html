@@ -11,15 +11,30 @@
   </header>
 
   <div class="article-content reading-panel">
-    {% for paragraph in article.content %}
-      <p>
-        {% if article.project_link is defined and article.project_link.text in paragraph %}
-          {% set link_parts = paragraph.split(article.project_link.text) %}
-          {{ link_parts[0] }}<a class="article-inline-link" href="{{ url_for('project_detail', slug=article.project_link.slug) }}">{{ article.project_link.text }}</a>{{ link_parts[1] }}
+    {% for block in article.content %}
+      {% if block is mapping %}
+        {% if block.type == 'heading' %}
+          <h2>{{ block.text }}</h2>
         {% else %}
-          {{ paragraph }}
+          <p class="{% if block.type == 'lead' %}article-lead{% endif %}">
+            {% if block.link_text is defined %}
+              {% set link_parts = block.text.split(block.link_text, 1) %}
+              {{ link_parts[0] }}<a class="article-inline-link" href="{{ url_for(block.link_endpoint, slug=block.link_slug) }}">{{ block.link_text }}</a>{{ link_parts[1] }}
+            {% else %}
+              {{ block.text }}
+            {% endif %}
+          </p>
         {% endif %}
-      </p>
+      {% else %}
+        <p>
+          {% if article.project_link is defined and article.project_link.text in block %}
+            {% set link_parts = block.split(article.project_link.text, 1) %}
+            {{ link_parts[0] }}<a class="article-inline-link" href="{{ url_for('project_detail', slug=article.project_link.slug) }}">{{ article.project_link.text }}</a>{{ link_parts[1] }}
+          {% else %}
+            {{ block }}
+          {% endif %}
+        </p>
+      {% endif %}
     {% endfor %}
   </div>
 
