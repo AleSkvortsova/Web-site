@@ -1,5 +1,19 @@
 {% extends "base.html" %}
 
+{% macro render_article_segments(segments) -%}
+  {%- for segment in segments -%}
+    {%- if segment.href is defined -%}<a class="article-inline-link" href="{{ segment.href }}" target="_blank" rel="noopener noreferrer">{%- endif -%}
+    {%- if segment.bold is defined and segment.bold -%}<strong>{%- endif -%}
+    {%- if segment.italic is defined and segment.italic -%}<em>{%- endif -%}
+    {%- if segment.code is defined and segment.code -%}<code>{%- endif -%}
+    {{- segment.text -}}
+    {%- if segment.code is defined and segment.code -%}</code>{%- endif -%}
+    {%- if segment.italic is defined and segment.italic -%}</em>{%- endif -%}
+    {%- if segment.bold is defined and segment.bold -%}</strong>{%- endif -%}
+    {%- if segment.href is defined -%}</a>{%- endif -%}
+  {%- endfor -%}
+{%- endmacro %}
+
 {% block title %}{{ article.title }} | Александра Скворцова{% endblock %}
 
 {% block content %}
@@ -15,6 +29,8 @@
       {% if block is mapping %}
         {% if block.type == 'heading' %}
           <h2>{{ block.text }}</h2>
+        {% elif block.type == 'rich' %}
+          <p>{{ render_article_segments(block.segments) }}</p>
         {% else %}
           <p class="{% if block.type == 'lead' %}article-lead{% endif %}">
             {% if block.link_text is defined %}

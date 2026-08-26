@@ -36,6 +36,12 @@ STOPWORDS = {
     "где",
     "чем",
     "кто",
+    "какая",
+    "какие",
+    "какой",
+    "такое",
+    "такой",
+    "значит",
     "why",
     "how",
     "what",
@@ -46,11 +52,22 @@ STOPWORDS = {
 }
 
 
+DASHES = str.maketrans({
+    "-": " ",
+    "‐": " ",
+    "‑": " ",
+    "–": " ",
+    "—": " ",
+})
+
+
+def _normalize_text(value: str) -> str:
+    normalized = value.lower().replace("ё", "е").translate(DASHES)
+    return " ".join(re.findall(r"[\wа-я]+", normalized, flags=re.IGNORECASE))
+
+
 def _years(question: str) -> list[str]:
-    return [
-        year
-        for year in re.findall(r"\b(20(?:0[5-9]|1[0-9]|2[0-5]))\b", question)
-    ]
+    return re.findall(r"\b(20\d{2})\b", question)
 
 
 def semantic_search(question: str, top_k: int | None = None) -> list[RetrievedChunk]:
@@ -81,8 +98,24 @@ def semantic_search(question: str, top_k: int | None = None) -> list[RetrievedCh
 
 
 def _keywords(question: str) -> list[str]:
-    words = re.findall(r"[\wа-яА-ЯёЁ]+", question.lower())
-    return [word for word in words if len(word) > 2 and word not in STOPWORDS]
+    words = _normalize_text(question).split()
+    return list(dict.fromkeys(word for word in words if len(word) > 2 and word not in STOPWORDS))
+
+
+def _keyword_score(question: str, content: str, terms: list[str]) -> float:
+    normalized_question = _normalize_text(question)
+    normalized_content = _normalize_text(content)
+    content_words = set(normalized_content.split())
+
+    score = float(sum(1 for term in terms if term in content_words))
+    if normalized_question and normalized_question in normalized_content:
+        score += 12
+
+    for left, right in zip(terms, terms[1:]):
+        if f"{left} {right}" in normalized_content:
+            score += 3
+
+    return score
 
 
 def keyword_search(question: str, limit: int | None = None) -> list[RetrievedChunk]:
@@ -100,8 +133,7 @@ def keyword_search(question: str, limit: int | None = None) -> list[RetrievedChu
         result.get("documents", []),
         result.get("metadatas", []),
     ):
-        content_lower = (content or "").lower()
-        score = sum(1 for term in terms if term in content_lower)
+        score = _keyword_score(question, content or "", terms)
         for year in years:
             if re.search(rf"\b{re.escape(year)}\b", content or ""):
                 score += 10
@@ -113,7 +145,7 @@ def keyword_search(question: str, limit: int | None = None) -> list[RetrievedChu
                     id=chunk_id,
                     content=content,
                     metadata=metadata or {},
-                    score=float(score),
+                    score=score,
                     retrieval_method="keyword",
                 )
             )
@@ -129,11 +161,16 @@ def retrieve(question: str, top_k: int | None = None) -> list[RetrievedChunk]:
 
     merged: list[RetrievedChunk] = []
     seen: set[str] = set()
-    for chunk in [*semantic, *keyword]:
-        if chunk.id in seen:
-            continue
-        seen.add(chunk.id)
-        merged.append(chunk)
-        if len(merged) >= k:
-            break
+
+    for index in range(max(len(keyword), len(semantic))):
+        for results in (keyword, semantic):
+            if index >= len(results):
+                continue
+            chunk = results[index]
+            if chunk.id in seen:
+                continue
+            seen.add(chunk.id)
+            merged.append(chunk)
+            if len(merged) >= k:
+                return merged
     return merged

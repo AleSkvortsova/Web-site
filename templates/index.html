@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Главная | Александра Скворцова{% endblock %}
+{% block title %}startprompt.ru | Александра Скворцова{% endblock %}
 
 {% block content %}
 <section class="hero journal-hero">
@@ -17,7 +17,7 @@
             проекты, где важны результат, системный подход и готовность к трансформации.
           </p>
           <p>
-            Этот сайт — мой рабочий журнал проектов. Здесь я выращиваю свой “сад” решений:
+            Этот сайт — мой рабочий журнал проектов. Здесь я выращиваю свой «сад» решений:
             разбираю процессы, ищу точки роста и проверяю, где ИИ действительно помогает
             бизнесу, а где только красиво маскирует лишнюю сложность. Речь не о погоне
             за трендами, а о том, что действительно приживается в работе. Собираю идеи,
@@ -49,7 +49,7 @@
   <article class="featured-article article-panel">
     <div class="featured-article-copy">
       <span class="mini-chip">из статей</span>
-      <p class="eyebrow">Последняя публикация</p>
+      <p class="eyebrow">Свежие публикации</p>
       <p class="article-date">{{ featured_article.date }}</p>
       <h2>{{ featured_article.title }}</h2>
       <p>{{ featured_article.excerpt }}</p>
@@ -114,8 +114,8 @@
   <div class="projects-preview-panel">
     <div class="section-heading section-heading-row">
       <div>
-        <p class="eyebrow">Последние записи</p>
-        <h2>Последние проекты</h2>
+        <p class="eyebrow">Проектный журнал</p>
+        <h2>Актуальные проекты</h2>
       </div>
       <a class="text-link" href="{{ url_for('projects') }}">Все проекты</a>
     </div>

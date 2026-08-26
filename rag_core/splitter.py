@@ -16,14 +16,43 @@ def _paragraphs(text: str) -> list[str]:
     return [part.strip() for part in text.split("\n\n") if part.strip()]
 
 
-def _split_long_text(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
+def _sections(text: str) -> list[tuple[str, str]]:
+    sections: list[tuple[str, str]] = []
+    heading = ""
+    body: list[str] = []
+
+    def append_section() -> None:
+        if heading or body:
+            sections.append((heading, "\n\n".join(body).strip()))
+
+    for paragraph in _paragraphs(text):
+        if paragraph.startswith("#"):
+            append_section()
+            heading = paragraph
+            body = []
+        else:
+            body.append(paragraph)
+    append_section()
+    return sections
+
+
+def _split_long_text(
+    text: str,
+    chunk_size: int,
+    chunk_overlap: int,
+    prefix: str = "",
+) -> list[str]:
     chunks: list[str] = []
-    step = chunk_size - chunk_overlap
+    available_size = chunk_size - len(prefix) - (2 if prefix else 0)
+    if available_size <= chunk_overlap:
+        raise ValueError("RAG_CHUNK_SIZE is too small for a markdown heading")
+    step = available_size - chunk_overlap
     for start in range(0, len(text), step):
-        chunk = text[start : start + chunk_size].strip()
+        piece = text[start : start + available_size].strip()
+        chunk = f"{prefix}\n\n{piece}".strip() if prefix else piece
         if chunk:
             chunks.append(chunk)
-        if start + chunk_size >= len(text):
+        if start + available_size >= len(text):
             break
     return chunks
 
@@ -36,7 +65,6 @@ def split_documents(
 
     chunks: list[DocumentChunk] = []
     for document in documents:
-        current = ""
         chunk_index = 0
 
         def append_chunk(content: str) -> None:
@@ -58,24 +86,12 @@ def split_documents(
             )
             chunk_index += 1
 
-        for paragraph in _paragraphs(document.content):
-            if len(paragraph) > chunk_size:
-                if current:
-                    append_chunk(current)
-                    current = ""
-                for piece in _split_long_text(paragraph, chunk_size, chunk_overlap):
-                    append_chunk(piece)
-                continue
-
-            candidate = f"{current}\n\n{paragraph}".strip() if current else paragraph
-            if len(candidate) <= chunk_size:
-                current = candidate
+        for heading, body in _sections(document.content):
+            section = f"{heading}\n\n{body}".strip() if heading else body
+            if len(section) <= chunk_size:
+                append_chunk(section)
             else:
-                append_chunk(current)
-                overlap = current[-chunk_overlap:].strip() if chunk_overlap else ""
-                current = f"{overlap}\n\n{paragraph}".strip() if overlap else paragraph
-
-        append_chunk(current)
+                for piece in _split_long_text(body, chunk_size, chunk_overlap, prefix=heading):
+                    append_chunk(piece)
 
     return chunks
-
